@@ -9,7 +9,8 @@ int precedence(char optr)
         return 1;
     if (optr == '*' || optr == '/')
         return 2;
-
+    if (optr == '^')
+        return 3;
     return 0;
 }
 string convert_to_postfix(string infix)
