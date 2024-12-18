@@ -4,7 +4,7 @@ using namespace std;
 
 struct Nodes
 {
-    int value;
+    char value;
     Nodes *next;
 };
 
@@ -27,7 +27,7 @@ public:
             pop();
         }
     }
-    void push(int newValue)
+    void push(char newValue)
     {
 
         Nodes *newNode;
@@ -53,12 +53,11 @@ public:
             length--;
         }
     };
-    int peek()
+    char peek()
     {
         if (length == 0)
         {
-            cout << "The stack is empty";
-            return -1;
+            return '0';
         }
         else
         {
@@ -75,7 +74,7 @@ public:
         string store = " ";
         while (t != nullptr)
         {
-            store += to_string(t->value) + " ";
+            store += (t->value) + " ";
             t = t->next;
         }
         return store;
