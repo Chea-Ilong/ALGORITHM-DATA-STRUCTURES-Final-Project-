@@ -54,6 +54,7 @@ string convert_to_postfix(string infix)
     }
     return temp;   
 }
+
 string convert_to_prefix(string infix)
 { 
     reverse(infix.begin(),infix.end());
