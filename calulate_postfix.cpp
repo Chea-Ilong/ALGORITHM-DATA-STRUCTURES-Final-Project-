@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <cmath>
 #include <fstream>
+#include <cstdlib>
 #include <limits>
 using namespace std;
 
@@ -169,11 +170,11 @@ public:
             else if (token == "+" || token == "-" || token == "*" || token == "/" || token == "^")
             {
                 // It's an operator, check for sufficient operands
-                // if (stack.size() < 2)
-                // {
-                //     cout << "Error: Not enough operands for operation!" << endl;
-                //     return NAN; // Return NaN for invalid expression
-                // }
+                if (stack.size() < 2)
+                {
+                    cout << "Error: Not enough operands for operation!" << endl;
+                    return NAN; // Return NaN for invalid expression
+                }
 
                 double op2 = stack.peek();
                 stack.pop();
@@ -198,7 +199,8 @@ public:
                 case '/':
                     if (op2 == 0)
                     {
-                        return numeric_limits<double>::infinity();
+                        cout << "Can't divide by 0" << endl;
+                        return NAN;
                     }
                     result = op1 / op2;
                     break;
@@ -212,18 +214,16 @@ public:
         }
 
         // The final result should be the only item left in the stack
-        // if (stack.size() == 1)
-        // {
-        //     cout << fixed << setprecision(2) << endl;
-        //     return stack.peek();
-        // }
-        // else
-        // {
-        //     cout << "Error: Invalid expression!" << endl;
-        //     return NAN; // Return NaN for invalid expression
-        // }
-        cout << fixed << setprecision(2);
-        return stack.peek();
+        if (stack.size() == 1)
+        {
+            cout << fixed << setprecision(2) << endl;
+            return stack.peek();
+        }
+        else
+        {
+            cout << "Error: Invalid expression!" << endl;
+            return NAN; // Return NaN for invalid expression
+        }
     }
 
     void store_valid_expression(auto expression, auto result)
@@ -412,34 +412,6 @@ public:
         }
     }
 
-    void postfix()
-    {
-        string expression;
-
-        cout << "Enter a postfix expression to calculate (e.g., '23 4 + 5 *'): ";
-        getline(cin, expression);
-
-        if (!validate_postfix(expression))
-        {
-            store_invalid_expression(expression);
-        }
-        else
-        {
-
-            double result = evaluate_postfix(expression);
-            if (isinf(result))
-            {
-                cout << "Result is infinity!" << result << endl;
-                store_valid_expression(expression, result);
-            }
-            else
-            {
-
-                cout << result << endl;
-                store_valid_expression(expression, result);
-            }
-        }
-    }
     void remove_postfix_expression()
     {
         string old_expression;
@@ -463,18 +435,116 @@ public:
         update_expression(old_expression, new_expression);
         // display_valid_expression();
     }
-};
+    void help()
+    {
+        cout << "Postfix Notation Help:" << endl;
+        cout << "--------------------------" << endl;
 
+        cout << "1. Parentheses:" << endl;
+        cout << "   - Infix: Uses parentheses to show operation order (e.g., (3 + 4) * 5)." << endl;
+        cout << "   - Postfix: No parentheses needed; order is clear from position (e.g., 3 4 + 5 *)." << endl;
+
+        cout << "2. Operator Precedence:" << endl;
+        cout << "   - Infix: Operators follow rules (e.g., multiplication before addition)." << endl;
+        cout << "   - Postfix: Order is determined by position, no need for precedence rules." << endl;
+
+        cout << "3. Evaluation:" << endl;
+        cout << "   - Infix: Needs extra steps to handle parentheses and operator order." << endl;
+        cout << "   - Postfix: Simply processed left to right with a stack." << endl;
+    }
+
+    void menu()
+    {
+        int choice;
+        cout << "Choose an option: \n"
+             << "1. Evaluate postfix expression\n"
+             << "2. View all expressions\n"
+             << "3. Update an expression\n"
+             << "4. Delete an expression\n"
+             << "5. Exit\n";
+        cin >> choice;
+        cin.ignore(); // to ignore the leftover newline character
+        system("cls");
+        switch (choice)
+        {
+        case 1:
+            postfix();
+            break;
+        case 2:
+            display_valid_expression();
+            break;
+        case 3:
+            update_postfix_expression();
+            break;
+        case 4:
+            remove_postfix_expression();
+            break;
+        case 5:
+            exit(0);
+        default:
+            cout << "Invalid choice! Please try again.\n";
+        }
+    }
+    void postfix()
+    {
+        string expression;
+        int count = 0;
+        char option;
+
+        while (count < 3)
+        {
+            cout << "Enter a postfix expression to calculate (e.g., '23 4 + 5 *'): ";
+            getline(cin, expression);
+
+            if (!validate_postfix(expression))
+            {
+                store_invalid_expression(expression);
+                count++;
+                if (count == 3)
+                {
+                    cout << "Too many invalid expressions entered!" << endl;
+                    cout << "Would you like help understanding postfix expressions?" << endl;
+                    cout << "Press 'y' for yes or 'n' for no: ";
+                    cin >> option;
+                    cin.ignore();
+
+                    if (option == 'y' || option == 'Y')
+                    {
+                        help();
+                        count = 0;
+                        continue;
+                    }
+                    else
+                    {
+                        cout << "Alright, feel free to ask for help anytime!" << endl;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                double result = evaluate_postfix(expression);
+                if (isnan(result))
+                {
+                    store_invalid_expression(expression);
+                }
+                else
+                {
+                    cout << "Result: " << result << endl;
+                    store_valid_expression(expression, result);
+                }
+                break; // Exit after successfully evaluating the expression
+            }
+        }
+    }
+};
 int main()
 {
     Postfix_expression post;
-
     while (1)
     {
-        post.remove_postfix_expression();
-        post.update_postfix_expression();
-        post.postfix();
+        
+        post.menu();
     }
-
     return 0;
 }
