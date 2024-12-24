@@ -6,12 +6,11 @@
 #include <cmath>   // For NaN
 #include <fstream>
 #include <limits>
-#include "calulate_postfix.h"
 using namespace std;
 void add_expression(auto expression, auto result)
 {
 
-    fstream out1file("C:\\Users\\MSI PC\\Desktop\\advance final\\ALGORITHM-DATA-STRUCTURES-Final-Project-\\expression_postfix.csv", ios::app);
+    fstream out1file("expression_postfix.csv", ios::app);
 
     if (!out1file.is_open())
     {
@@ -25,7 +24,7 @@ void add_expression(auto expression, auto result)
 void invalid_expression(auto expression)
 {
 
-    fstream out1file("C:\\Users\\MSI PC\\Desktop\\advance final\\ALGORITHM-DATA-STRUCTURES-Final-Project-\\invalid_postfix_expression.csv", ios::app);
+    fstream out1file("invalid_postfix_expression.csv", ios::app);
 
     if (!out1file.is_open())
     {
@@ -38,7 +37,7 @@ void invalid_expression(auto expression)
 }
 void display_valid_file()
 {
-    ifstream infile("C:\\Users\\MSI PC\\Desktop\\advance final\\ALGORITHM-DATA-STRUCTURES-Final-Project-\\expression_postfix.csv", ios::in);
+    ifstream infile("expression_postfix.csv", ios::in);
 
     if (!infile.is_open())
     {
@@ -54,7 +53,7 @@ void display_valid_file()
 }
 void display_invalid_file()
 {
-    ifstream infile("C:\\Users\\MSI PC\\Desktop\\advance final\\ALGORITHM-DATA-STRUCTURES-Final-Project-\\invalid_postfix_expression.csv", ios::in);
+    ifstream infile("invalid_postfix_expression.csv", ios::in);
 
     if (!infile.is_open())
     {
@@ -71,8 +70,8 @@ void display_invalid_file()
 
 void delete_expression(const string &expression_to_delete)
 {
-    ifstream infile("C:\\Users\\MSI PC\\Desktop\\advance final\\ALGORITHM-DATA-STRUCTURES-Final-Project-\\expression_postfix.csv");
-    ofstream outfile("C:\\Users\\MSI PC\\Desktop\\advance final\\ALGORITHM-DATA-STRUCTURES-Final-Project-\\expression_postfix_temp.csv");
+    ifstream infile("expression_postfix.csv");
+    ofstream outfile("expression_postfix_temp.csv");
 
     if (!infile.is_open())
     {
@@ -124,21 +123,21 @@ void delete_expression(const string &expression_to_delete)
     // If the expression was found, replace the original file with the updated one
     if (found)
     {
-        remove("C:\\Users\\MSI PC\\Desktop\\advance final\\ALGORITHM-DATA-STRUCTURES-Final-Project-\\expression_postfix.csv");
-        rename("C:\\Users\\MSI PC\\Desktop\\advance final\\ALGORITHM-DATA-STRUCTURES-Final-Project-\\expression_postfix_temp.csv",
-               "C:\\Users\\MSI PC\\Desktop\\advance final\\ALGORITHM-DATA-STRUCTURES-Final-Project-\\expression_postfix.csv");
+        remove("expression_postfix.csv");
+        rename("expression_postfix_temp.csv",
+               "expression_postfix.csv");
         cout << "Expression deleted successfully!" << endl;
     }
     else
     {
         // If the expression was not found, delete the temporary file
-        remove("C:\\Users\\MSI PC\\Desktop\\advance final\\ALGORITHM-DATA-STRUCTURES-Final-Project-\\expression_postfix_temp.csv");
+        remove("expression_postfix_temp.csv");
     }
 }
 void update_expression(const string &old_expression, const string &new_expression)
 {
-    ifstream infile("C:\\Users\\MSI PC\\Desktop\\advance final\\ALGORITHM-DATA-STRUCTURES-Final-Project-\\expression_postfix.csv");
-    ofstream outfile("C:\\Users\\MSI PC\\Desktop\\advance final\\ALGORITHM-DATA-STRUCTURES-Final-Project-\\expression_postfix_temp.csv");
+    ifstream infile("expression_postfix.csv");
+    ofstream outfile("expression_postfix_temp.csv");
 
     if (!infile.is_open())
     {
@@ -200,14 +199,14 @@ void update_expression(const string &old_expression, const string &new_expressio
     // If the expression was found, replace the original file with the updated one
     if (found)
     {
-        remove("C:\\Users\\MSI PC\\Desktop\\advance final\\ALGORITHM-DATA-STRUCTURES-Final-Project-\\expression_postfix.csv");
-        rename("C:\\Users\\MSI PC\\Desktop\\advance final\\ALGORITHM-DATA-STRUCTURES-Final-Project-\\expression_postfix_temp.csv",
-               "C:\\Users\\MSI PC\\Desktop\\advance final\\ALGORITHM-DATA-STRUCTURES-Final-Project-\\expression_postfix.csv");
+        remove("expression_postfix.csv");
+        rename("expression_postfix_temp.csv",
+               "expression_postfix.csv");
         cout << "Expression updated successfully!" << endl;
     }
     else
     {
         // If the expression was not found, delete the temporary file
-        remove("C:\\Users\\MSI PC\\Desktop\\advance final\\ALGORITHM-DATA-STRUCTURES-Final-Project-\\expression_postfix_temp.csv");
+        remove("expression_postfix_temp.csv");
     }
 }
