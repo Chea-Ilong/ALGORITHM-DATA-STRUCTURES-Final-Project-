@@ -251,6 +251,11 @@ int prefixEvaluation(const string &prefixExpression)
                 opStack.push(op2 * op1);
                 break;
             case '/':
+                if( op1 / op2){
+                           
+                    cout << "Can't divide by 0"<<endl;
+                      return NAN;
+                }
                 opStack.push(op2 / op1);
                 break;
             case '^':
@@ -258,7 +263,7 @@ int prefixEvaluation(const string &prefixExpression)
                 break;
             default:
                 cout << "Error: Unknown operator " << prefixExpression[i] << endl;
-                return -1;
+                return NAN;
             }
         }
     }
