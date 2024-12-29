@@ -96,22 +96,20 @@ public:
         {
             char ch = expression[i];
 
-            //First Check, if it is a number(negative and decimal and negative decimal)
-            // if it is a number || - a negative sign follow by a number
-            //check if there is only one number 
-                    
+            // First Check, if it is a number(negative and decimal and negative decimal)
+            //  if it is a number || - a negative sign follow by a number
+            // check if there is only one number
+
             if (isdigit(ch) || (ch == '-' && (i + 1 < expression.length() && isdigit(expression[i + 1]))))
             {
 
                 hasDigit = true;
-                
-                
 
                 if (ch == '-')
                     ++i;
-                // already know it is a negative number 
-                //check the next index and if it is a number or decimal point
-                //if not go to the previous index and skip past the space
+                // already know it is a negative number
+                // check the next index and if it is a number or decimal point
+                // if not go to the previous index and skip past the space
                 while (i < expression.length() && (isdigit(expression[i]) || expression[i] == '.'))
                 {
                     ++i;
@@ -302,6 +300,12 @@ public:
         string line, result;
         bool found = false;
 
+        if (!validate_postfix(new_expression))
+        {
+            return;
+
+        }
+
         double calculated_result = evaluate_postfix(new_expression);
         result = to_string(calculated_result);
 
@@ -402,7 +406,7 @@ public:
         string old_expression;
 
         display_valid_expression();
-        cout << "Enter the expression you want to delete: ";
+        cout << "Enter the equation you want to delete (ex: 1 1 + = 2): ";
         getline(cin, old_expression);
         delete_expression(old_expression);
         // display_valid_expression();
@@ -413,9 +417,9 @@ public:
         string new_expression;
 
         display_valid_expression();
-        cout << "Enter the expression you want to update: ";
+        cout << "Enter the equation you want to update (ex: 1 1 + = 2): ";
         getline(cin, old_expression);
-        cout << "Enter the new expression: ";
+        cout << "Enter the new expression (ex: 1 1 + ): ";
         getline(cin, new_expression);
         update_expression(old_expression, new_expression);
         // display_valid_expression();
@@ -525,9 +529,12 @@ public:
         }
     }
 };
+
+
 int main()
+
 {
-    Calculate_postfix post;
+       Calculate_postfix post;
 
     while (1)
     {
