@@ -1,4 +1,4 @@
-#include "header/Stack.h"
+#include "Stack.h"
 #include <iostream>
 #include <string>
 #include <algorithm>
@@ -45,6 +45,68 @@ class Expression_Conversion //User are able to convert number or variable (A, B,
         }
 
     }
+    void menu_conversion()
+    {
+        int choice;
+        do
+        {
+            cout<<endl<<endl<<"1. Input Infix Expression";
+            cout<<endl<<"2. Update ";
+            cout<<endl<<"3. Update in File";
+            cout<<endl<<"4. Read from file";
+            cout<<endl<<"5. Delete in File";
+            cout<<endl<<"6. Convert to Postfix Expression";
+            cout<<endl<<"7. Convert to Prefix Expression";
+            cout<<endl<<"8. Save to file";
+            cout<<endl<<"9. Exit";
+            cout<<endl<<"Enter your choice: ";
+            cin>>choice;
+            cin.ignore();
+            cout<<endl;
+            switch(choice)
+            {
+                case 1:
+                    input_infix();
+                    break;
+                case 2:
+                    update();
+                    break;
+                case 3:
+                    int line;
+                    read_from_file();
+                    cout<<endl<<"Enter the line you want to update: ";
+                    cin>>line;
+                    cin.ignore();
+                    update_to_file(line);
+                    break;
+                case 4:
+                    read_from_file();
+                    break;
+                case 5:
+                    int line_delete;
+                    read_from_file();
+                    cout<<endl<<"Enter the line you want to delete: ";
+                    cin>>line_delete;
+                    delete_from_file(line_delete);
+                    break;
+                case 6:
+                    cout<<endl<<"The postfix expression is: "<<convert_to_postfix();
+                    break;
+                case 7:
+                    cout<<endl<<"The prefix expression is: "<<convert_to_prefix();
+                    break;
+                case 8:
+                    save_to_file();
+                    cout<<endl<<"The expression and its conversions have been saved successfully to [" <<valid_file_name<<"]";
+                    break;
+                case 9:
+                    cout<<endl<<"Exiting the program";
+                    break;
+                default:
+                    cout<<endl<<"Invalid choice";
+            }
+        }while(choice!=9);
+    }
     void save_to_file()
     {
         if(infix!="")
@@ -54,7 +116,8 @@ class Expression_Conversion //User are able to convert number or variable (A, B,
             write_file.close();
         }
     }
-    bool validate(string infix)
+
+    bool validate(string infix) //Validate if the input expression is right or wrong
     {
         int parenthesis=0;
         if ( !isalnum(infix[0]))
@@ -92,6 +155,7 @@ class Expression_Conversion //User are able to convert number or variable (A, B,
         }
         return true;
     }
+
     void input_infix() //Allow users to input as many whitespace as they want
     {
         cout<<endl<<"Enter the infix expression: ";
@@ -125,10 +189,93 @@ class Expression_Conversion //User are able to convert number or variable (A, B,
 
     void update()
     {
-        cout<<endl<<"The old expression: "<<infix;
+        cout<<endl<<"The old expression: "<<infix_with_space;
         input_infix();
     }
-    void update_to_file(int line)
+
+    void update_to_file(int line) // using vector to store both prefix and postfix in the file. The update will be on the vector before writing it to the file
+    {
+        if(line<=0)
+        {
+            cout<<"Invalid Line";
+            return;
+        }
+        vector <string> vec_postfix; 
+        string temp_postfix;
+        vector <string> vec_prefix;
+        string temp_prefix;
+        string temp;
+        ifstream read_file(valid_file_name);
+        if(!read_file.is_open())
+        {
+            cout<<endl<<"Cannot open the file";
+            return;
+        }
+
+        while(getline(read_file,temp))
+        {
+            stringstream ss(temp);
+            getline(ss,temp_prefix,',');
+            vec_prefix.push_back(temp_prefix);
+            getline(ss,temp_postfix);
+            vec_postfix.push_back(temp_postfix);
+        }
+        read_file.close();
+        stringstream ss(vec_postfix[line-1]); // Line - 1 because Line is count from 1 instead of 0 like index
+        string store_infix;
+        getline(ss,store_infix,'=');
+        cout<<endl<<"["<<line<<"] "<<store_infix;
+        input_infix();
+        vec_postfix [line-1] = infix_with_space + " = " + postfix;
+        vec_prefix [line-1] = infix_with_space + " = " + prefix;
+        ofstream write_file(valid_file_name);
+        if(!write_file.is_open())
+        {
+            cout<<"Unable to open file";
+            return;
+        }
+        for(int i = 0;i<vec_postfix.size();i++)
+        {
+            write_file << vec_prefix[i]<<','<<vec_postfix[i]<<endl;
+        }
+        write_file.close();
+    }
+
+    void read_from_file()
+    {
+        vector <string> vec_postfix;
+        string temp_postfix;
+        vector <string> vec_prefix;
+        string temp_prefix;
+        string temp;
+        ifstream read_file(valid_file_name);
+        if(!read_file.is_open())
+        {
+            cout<<endl<<"Cannot open the file";
+            return;
+        }
+        while(getline(read_file,temp))
+        {
+            stringstream ss(temp);
+            getline(ss,temp_prefix,',');
+            vec_prefix.push_back(temp_prefix);
+            getline(ss,temp_postfix);
+            vec_postfix.push_back(temp_postfix);
+        }
+        read_file.close();
+        cout<<"Conversion to Prefix Expression : ";
+        for(int i = 0;i<vec_prefix.size();i++)
+        {
+            cout<<endl<<"["<<i+1<<"] "<<vec_prefix[i];
+        }
+        cout<<endl<<"Conversion to Postfix Expression : ";
+        for(int i = 0;i<vec_postfix.size();i++)
+        {
+            cout<<endl<<"["<<i+1<<"] "<<vec_postfix[i];
+        }
+    }
+
+    void delete_from_file(int line)
     {
         if(line<=0)
         {
@@ -156,13 +303,8 @@ class Expression_Conversion //User are able to convert number or variable (A, B,
             vec_postfix.push_back(temp_postfix);
         }
         read_file.close();
-        stringstream ss(vec_postfix[line-1]);
-        string store_infix;
-        getline(ss,store_infix,'=');
-        cout<<endl<<"["<<line<<"] "<<store_infix;
-        input_infix();
-        vec_postfix [line-1] = infix_with_space + " = " + postfix;
-        vec_prefix [line-1] = infix_with_space + " = " + prefix;
+        vec_postfix.erase(vec_postfix.begin() + line-1);
+        vec_prefix.erase(vec_prefix.begin() + line-1);
         ofstream write_file(valid_file_name);
         if(!write_file.is_open())
         {
@@ -174,40 +316,6 @@ class Expression_Conversion //User are able to convert number or variable (A, B,
             write_file << vec_prefix[i]<<','<<vec_postfix[i]<<endl;
         }
         write_file.close();
-    }
-    void read_from_file()
-    {
-        vector <string> vec_postfix;
-        string temp_postfix;
-        vector <string> vec_prefix;
-        string temp_prefix;
-        string temp;
-        
-        ifstream read_file(valid_file_name);
-        if(!read_file.is_open())
-        {
-            cout<<endl<<"Cannot open the file";
-            return;
-        }
-        while(getline(read_file,temp))
-        {
-            stringstream ss(temp);
-            getline(ss,temp_prefix,',');
-            vec_prefix.push_back(temp_prefix);
-            getline(ss,temp_postfix);
-            vec_postfix.push_back(temp_postfix);
-        }
-        read_file.close();
-        cout<<"Conversion to Prefix Expression : ";
-        for(int i = 0;i<vec_prefix.size();i++)
-        {
-            cout<<endl<<"["<<i+1<<"] "<<vec_prefix[i];
-        }
-        cout<<endl<<"Conversion to Postfix Expression : ";
-        for(int i = 0;i<vec_postfix.size();i++)
-        {
-            cout<<endl<<"["<<i+1<<"] "<<vec_postfix[i];
-        }
     }
     int precedence(char optr) //Evaluate which operator should take the priority
     {
@@ -286,53 +394,11 @@ class Expression_Conversion //User are able to convert number or variable (A, B,
         ofstream write_file(valid_file_name,ios::app);
         return temp;
     }
-    void delete_from_file(int line)
-    {
-        if(line<=0)
-        {
-            cout<<"Invalid Line";
-            return;
-        }
-        vector <string> vec_postfix;
-        string temp_postfix;
-        vector <string> vec_prefix;
-        string temp_prefix;
-        string temp;
-        ifstream read_file(valid_file_name);
-        if(!read_file.is_open())
-        {
-            cout<<endl<<"Cannot open the file";
-            return;
-        }
-
-        while(getline(read_file,temp))
-        {
-            stringstream ss(temp);
-            getline(ss,temp_prefix,',');
-            vec_prefix.push_back(temp_prefix);
-            getline(ss,temp_postfix);
-            vec_postfix.push_back(temp_postfix);
-        }
-        read_file.close();
-        vec_postfix.erase(vec_postfix.begin() + line-1);
-        vec_prefix.erase(vec_prefix.begin() + line-1);
-        ofstream write_file(valid_file_name);
-        if(!write_file.is_open())
-        {
-            cout<<"Unable to open file";
-            return;
-        }
-        for(int i = 0;i<vec_postfix.size();i++)
-        {
-            write_file << vec_prefix[i]<<','<<vec_postfix[i]<<endl;
-        }
-        write_file.close();
-    }
     string convert_to_postfix()
     {
         return postfix;
     }
-    string _convert_to_prefix()
+    string convert_to_prefix()
     {
         return prefix;
     }
