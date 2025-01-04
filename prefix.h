@@ -79,7 +79,7 @@ public:
 class PrefixEvaluation
 {
 
-    public:
+public:
     bool isValid(const string &expression)
     {
         int operandCount = 0;
@@ -352,17 +352,27 @@ class PrefixEvaluation
         return opStack.top();
     }
 
-        void run()
+    void run()
     {
         int choice;
         do
         {
-            cout << "\n--- Prefix ---\n";
-            cout << "1. Evaluate the Expression\n";
-            cout << "2. Display Evaluations\n";
-            cout << "3. Delete an Evaluation\n";
-            cout << "4. Update an Evaluation\n";
-            cout << "5. Exit\n";
+            cout << "******************************************" << endl;
+            cout << "*                                        *" << endl;
+            cout << "*      WELCOME TO PREFIX EVALUATION      *" << endl;
+            cout << "*                                        *" << endl;
+            cout << "******************************************" << endl
+                 << endl;
+
+            cout << "Please select an option from the menu below:" << endl
+                 << endl;
+
+            cout << "  1. Evaluate the Expression" << endl;
+            cout << "  2. Display Evaluations" << endl;
+            cout << "  3. Delete an Evaluation" << endl;
+            cout << "  4. Update an Evaluation" << endl;
+            cout << "  5. Exit" << endl
+                 << endl;
             cout << "Enter your choice: ";
             cin >> choice;
             cin.ignore();
@@ -518,4 +528,4 @@ class PrefixEvaluation
             }
         } while (choice != 5);
     }
-    };
+};

@@ -51,29 +51,31 @@ public:
         do
         {
             system("cls");
-            cout << endl<<"Welcome to Expression conversion"<<endl<<endl;
-            cout <<"Infix: "<<infix_with_space;
-            cout << endl
-                 << endl
-                 << "1. Input Infix Expression";
-            cout << endl
-                 << "2. Update ";
-            cout << endl
-                 << "3. Update in File";
-            cout << endl
-                 << "4. Read from file";
-            cout << endl
-                 << "5. Delete in File";
-            cout << endl
-                 << "6. Convert to Postfix Expression";
-            cout << endl
-                 << "7. Convert to Prefix Expression";
-            cout << endl
-                 << "8. Save to file";
-            cout << endl
-                 << "9. Exit";
-            cout << endl
-                 << "Enter your choice: ";
+            cout << "***********************************************" << endl;
+            cout << "*                                             *" << endl;
+            cout << "*     WELCOME TO THE EXPRESSION CONVERSION    *" << endl;
+            cout << "*                                             *" << endl;
+            cout << "***********************************************" << endl
+                 << endl;
+
+            cout << "Current Infix Expression: " << infix_with_space << endl
+                 << endl;
+
+            cout << "Please choose an option from the menu below:" << endl
+                 << endl;
+
+            cout << "  1. Enter a New Infix Expression" << endl;
+            cout << "  2. Modify the Current Infix Expression" << endl;
+            cout << "  3. Update Expression in File" << endl;
+            cout << "  4. View Expressions from File" << endl;
+            cout << "  5. Delete an Expression in File" << endl;
+            cout << "  6. Convert to Postfix Notation" << endl;
+            cout << "  7. Convert to Prefix Notation" << endl;
+            cout << "  8. Save the Expression to File" << endl;
+            cout << "  9. Exit the Program" << endl
+                 << endl;
+
+            cout << "Enter your choice: ";
             cin >> choice;
             cin.ignore();
             cout << endl;
@@ -125,7 +127,7 @@ public:
                 cout << endl
                      << "Invalid choice";
             }
-            cout<<endl;
+            cout << endl;
             system("pause");
         } while (choice != 9);
     }

@@ -446,15 +446,24 @@ public:
         int choice;
         do
         {
-            cout << endl
-                 << endl
-                 << "Welcome to Postfix Evaluation";
-            cout << "Choose an option: \n"
-                 << "1. Evaluate postfix expression\n"
-                 << "2. View all expressions\n"
-                 << "3. Update an expression\n"
-                 << "4. Delete an expression\n"
-                 << "5. Exit\n";
+
+            cout << "******************************************" << endl;
+            cout << "*                                        *" << endl;
+            cout << "*      WELCOME TO POSTFIX EVALUATION     *" << endl;
+            cout << "*                                        *" << endl;
+            cout << "******************************************" << endl
+                 << endl;
+
+            cout << "Please choose an option from the menu below:" << endl
+                 << endl;
+
+            cout << "  1. Evaluate Postfix Expression" << endl;
+            cout << "  2. View All Expressions" << endl;
+            cout << "  3. Update an Expression" << endl;
+            cout << "  4. Delete an Expression" << endl;
+            cout << "  5. Exit" << endl
+                 << endl;
+            cout << "Enter your choice: ";
             cin >> choice;
             cin.ignore();
             system("cls");
@@ -507,6 +516,8 @@ public:
                             else
                             {
                                 cout << "Alright, feel free to ask for help anytime!" << endl;
+                                     system("cls");
+
                                 break;
                             }
                         }
@@ -524,6 +535,9 @@ public:
 
                             cout << "Result: " << result << endl;
                             store_valid_expression(expression, result);
+                            cout << "\nPress any key to continue..." << endl;
+                            getchar();
+                            system("cls");
                         }
                         break;
                     }
@@ -531,8 +545,14 @@ public:
             }
             break;
             case 2:
+            {
+
                 display_valid_expression();
-                break;
+                cout << "\nPress any key to continue..." << endl;
+                getchar();
+                system("cls");
+            }
+            break;
             case 3:
             {
                 string old_expression;
@@ -544,6 +564,9 @@ public:
                 cout << "Enter the new expression (ex: 1 1 + ): ";
                 getline(cin, new_expression);
                 update_expression(old_expression, new_expression);
+                cout << "\nPress any key to continue..." << endl;
+                getchar();
+                system("cls");
             }
             break;
             case 4:
@@ -553,6 +576,10 @@ public:
                 cout << "Enter the equation you want to delete (ex: 1 1 + = 2): ";
                 getline(cin, old_expression);
                 delete_expression(old_expression);
+
+                cout << "\nPress any key to continue..." << endl;
+                getchar();
+                system("cls");
                 break;
             }
             case 5:
@@ -563,59 +590,59 @@ public:
             }
         } while (1);
     }
-    };
-    // void postfix()
-    // {
-    //     string expression;
-    //     int count = 0;
-    //     char option;
+};
+// void postfix()
+// {
+//     string expression;
+//     int count = 0;
+//     char option;
 
-    //     while (count < 3)
-    //     {
-    //         cout << "Enter a postfix expression to calculate (e.g., '23 4 + 5 *'): ";
-    //         getline(cin, expression);
+//     while (count < 3)
+//     {
+//         cout << "Enter a postfix expression to calculate (e.g., '23 4 + 5 *'): ";
+//         getline(cin, expression);
 
-    //         if (!validate_postfix(expression))
-    //         {
-    //             store_invalid_expression(expression);
-    //             count++;
-    //             if (count == 3)
-    //             {
-    //                 cout << "Too many invalid expressions entered!" << endl;
-    //                 cout << "Would you like help understanding postfix expressions?" << endl;
-    //                 cout << "Press 'y' for yes or 'n' for no: ";
-    //                 cin >> option;
-    //                 cin.ignore();
+//         if (!validate_postfix(expression))
+//         {
+//             store_invalid_expression(expression);
+//             count++;
+//             if (count == 3)
+//             {
+//                 cout << "Too many invalid expressions entered!" << endl;
+//                 cout << "Would you like help understanding postfix expressions?" << endl;
+//                 cout << "Press 'y' for yes or 'n' for no: ";
+//                 cin >> option;
+//                 cin.ignore();
 
-    //                 if (option == 'y' || option == 'Y')
-    //                 {
-    //                     help();
-    //                     count = 0;
-    //                     continue;
-    //                 }
-    //                 else
-    //                 {
-    //                     cout << "Alright, feel free to ask for help anytime!" << endl;
-    //                     break;
-    //                 }
-    //             }
-    //         }
-    //         else
-    //         {
-    //             double result = evaluate_postfix(expression);
-    //             if (isnan(result))
-    //             {
+//                 if (option == 'y' || option == 'Y')
+//                 {
+//                     help();
+//                     count = 0;
+//                     continue;
+//                 }
+//                 else
+//                 {
+//                     cout << "Alright, feel free to ask for help anytime!" << endl;
+//                     break;
+//                 }
+//             }
+//         }
+//         else
+//         {
+//             double result = evaluate_postfix(expression);
+//             if (isnan(result))
+//             {
 
-    //                 store_invalid_expression(expression);
-    //             }
-    //             else
-    //             {
+//                 store_invalid_expression(expression);
+//             }
+//             else
+//             {
 
-    //                 cout << "Result: " << result << endl;
-    //                 store_valid_expression(expression, result);
-    //             }
-    //             break;
-    //         }
-    //     }
-    // }
+//                 cout << "Result: " << result << endl;
+//                 store_valid_expression(expression, result);
+//             }
+//             break;
+//         }
+//     }
+// }
 // };
