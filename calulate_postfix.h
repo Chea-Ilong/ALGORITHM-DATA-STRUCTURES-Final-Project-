@@ -9,17 +9,17 @@
 #include <limits>
 using namespace std;
 
-struct Node
+struct Node_1
 {
     double value;
-    Node *next;
+    Node_1 *next;
 };
 
 class stack
 {
 private:
     int length;
-    Node *top;
+    Node_1 *top;
 
 public:
     stack()
@@ -37,7 +37,7 @@ public:
     }
     void push(double newValue)
     {
-        Node *newNode = new Node;
+        Node_1 *newNode = new Node_1;
         newNode->value = newValue;
         newNode->next = top;
         top = newNode;
@@ -52,7 +52,7 @@ public:
         }
         else
         {
-            Node *temp = top;
+            Node_1 *temp = top;
             top = top->next;
             delete temp;
             length--;

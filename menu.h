@@ -1,5 +1,6 @@
 #include "calulate_postfix.h"
 #include "converter.h"
+#include "prefix.h"
 using namespace std;
 
 void menu_postfix()
@@ -126,93 +127,15 @@ void menu_postfix()
         }
     } while (1);
 }
-
+void menu_prefix()
+{
+    PrefixEvaluation prefix;
+    prefix.run();
+}
 void menu_conversion()
 {
     Expression_Conversion convert;
-
-    int choice;
-    do
-    {
-
-        cout << endl
-             << endl
-             << "Welcome to Expression conversion";
-        cout << endl
-             << endl
-             << "1. Input Infix Expression";
-        cout << endl
-             << "2. Update ";
-        cout << endl
-             << "3. Update in File";
-        cout << endl
-             << "4. Read from file";
-        cout << endl
-             << "5. Delete in File";
-        cout << endl
-             << "6. Convert to Postfix Expression";
-        cout << endl
-             << "7. Convert to Prefix Expression";
-        cout << endl
-             << "8. Save to file";
-        cout << endl
-             << "9. Exit";
-        cout << endl
-             << "Enter your choice: ";
-        cin >> choice;
-        cin.ignore();
-        system("cls");
-        cout << endl;
-        switch (choice)
-        {
-        case 1:
-            
-            convert.input_infix();
-            break;
-        case 2:
-            convert.update();
-            break;
-        case 3:
-            int line;
-            convert.read_from_file();
-            cout << endl
-                 << "Enter the line you want to update: ";
-            cin >> line;
-            cin.ignore();
-            convert.update_to_file(line);
-            break;
-        case 4:
-            convert.read_from_file();
-            break;
-        case 5:
-            int line_delete;
-            convert.read_from_file();
-            cout << endl
-                 << "Enter the line you want to delete: ";
-            cin >> line_delete;
-            convert.delete_from_file(line_delete);
-            break;
-        case 6:
-            cout << endl
-                 << "The postfix expression is: " << convert.convert_to_postfix();
-            break;
-        case 7:
-            cout << endl
-                 << "The prefix expression is: " << convert.convert_to_prefix();
-            break;
-        case 8:
-            convert.save_to_file();
-            cout << endl
-                 << "The expression and its conversions have been saved successfully to [" << "valid_file_name" << "]";
-            break;
-        case 9:
-            cout << "Returning to Main Menu..." << endl;
-            return;
-        default:
-            cout << endl
-                 << "Invalid choice";
-        }
-    } while (choice != 9);
+    convert.menu_conversion();
 }
 void menu()
 {
@@ -221,13 +144,15 @@ void menu()
     // Display menu options to the user
     do
     {
+        system("cls");
         cout << "Select an option:" << endl;
-        cout << "1.  Convert Menu" << endl;
-        cout << "2. Postfix Menu" << endl;
-        cout << "3. Exit" << endl;
+        cout << "1. Convert Menu" << endl;
+        cout << "2. Prefix Menu" << endl;
+        cout << "3. Postfix Menu" << endl;
+        cout << "0. Exit" << endl;
 
         // Read user input
-        cout << "Enter your choice (1 or 2): ";
+        cout << "Enter your choice: ";
         cin >> choice;
 
         // Switch based on user choice
@@ -237,20 +162,20 @@ void menu()
             system("cls");
             menu_conversion();
             break;
-
         case 2:
+            system("cls");
+            menu_prefix();
+            break;
+        case 3:
              system("cls");
             menu_postfix();
             break;
-        case 3:
+        case 0:
             cout << endl
                  << "Exiting the program";
             break;
-
         default:
-            cout << "Invalid choice. Please select 1 or 2." << endl;
-            break;
+            cout << "Invalid choice. Please select 1 or 2 or 3." << endl;
         }
-
-    } while (choice != 3);
+    } while (choice != 0);
 }

@@ -8,19 +8,19 @@ struct Nodes
     Nodes *next;
 };
 
-class Stack
+class Stack_1
 {
 private:
     int length;
     Nodes *top;
 
 public:
-    Stack()
+    Stack_1()
     {
         top = nullptr;
         length = 0;
     }
-    ~Stack()
+    ~Stack_1()
     {
         while (!isEmpty())
         {
@@ -37,7 +37,7 @@ public:
         newNode->next = top;
         top = newNode;
         length++;
-    };
+    }
     void pop()
     {
         if (length == 0)
@@ -52,7 +52,7 @@ public:
             delete temp;
             length--;
         }
-    };
+    }
     char peek()
     {
         if (length == 0)
@@ -63,11 +63,11 @@ public:
         {
             return top->value;
         }
-    };
+    }
     bool isEmpty()
     {
         return (length == 0);
-    };
+    }
     string print()
     {
         Nodes *t = top;
@@ -83,5 +83,5 @@ public:
     {
 
         return length;
-    };
+    }
 };

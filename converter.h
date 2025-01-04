@@ -1,4 +1,4 @@
-#include "Stack.h"
+#include "Stack_1.h"
 #include <iostream>
 #include <string>
 #include <algorithm>
@@ -50,10 +50,9 @@ public:
         int choice;
         do
         {
-
-            cout << endl
-                 << endl
-                 << "Welcome to Expression conversion";
+            system("cls");
+            cout << endl<<"Welcome to Expression conversion"<<endl<<endl;
+            cout <<"Infix: "<<infix_with_space;
             cout << endl
                  << endl
                  << "1. Input Infix Expression";
@@ -126,6 +125,8 @@ public:
                 cout << endl
                      << "Invalid choice";
             }
+            cout<<endl;
+            system("pause");
         } while (choice != 9);
     }
     void save_to_file()
@@ -361,7 +362,7 @@ public:
     {
         if (input == "")
             input = infix;
-        Stack storage;
+        Stack_1 storage;
         string temp_postfix;
         for (unsigned int i = 0; i < input.size(); i++)
         {
