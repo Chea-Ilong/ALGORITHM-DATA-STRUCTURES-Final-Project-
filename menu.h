@@ -164,7 +164,8 @@ void menu()
             break;
         case 2:
             system("cls");
-
+            menu_prefix();
+            break;
         case 3:
              system("cls");
             menu_postfix();
@@ -173,11 +174,8 @@ void menu()
             cout << endl
                  << "Exiting the program";
             break;
-
         default:
             cout << "Invalid choice. Please select 1 or 2 or 3." << endl;
-            break;
         }
-
     } while (choice != 0);
 }
