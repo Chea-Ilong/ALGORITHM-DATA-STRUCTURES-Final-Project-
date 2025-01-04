@@ -76,300 +76,294 @@ public:
         return size == 0;
     }
 };
-
-bool isValid(const string &expression)
+class PrefixEvaluation
 {
-    int operandCount = 0;
-    int operatorCount = 0;
 
-    for (int i = expression.length() - 1; i >= 0; i--)
+    public:
+    bool isValid(const string &expression)
     {
-        if (isdigit(expression[i]))
+        int operandCount = 0;
+        int operatorCount = 0;
+
+        for (int i = expression.length() - 1; i >= 0; i--)
         {
-            while (i >= 0 && isdigit(expression[i]))
-                i--;
-            i++;
-            operandCount++;
-        }
-        else if (expression[i] == '+' || expression[i] == '-' || expression[i] == '*' || expression[i] == '/' || expression[i] == '^')
-        {
-            operatorCount++;
-            if (operatorCount >= operandCount)
-                return false;
-        }
-        else if (!isspace(expression[i]))
-        {
-            return false; // Invalid character
-        }
-    }
-    return operandCount == operatorCount + 1;
-}
-
-void storeValidExpression(const string &expression, int result)
-{
-    if (result == -1)
-    {
-        cout << "Error: Invalid result; cannot store the expression." << endl;
-        return;
-    }
-
-    ofstream file("prefix_valid_expressions.csv", ios::app);
-    if (file.is_open())
-    {
-        file << expression << "," << fixed << setprecision(2) << result << "\n";
-        file.close();
-    }
-    else
-    {
-        cout << "Error: Unable to open prefix_valid_expressions.csv for writing." << endl;
-    }
-}
-
-void storeInvalidExpression(const string &expression)
-{
-    ofstream file("prefix_invalid_expressions.csv", ios::app);
-    if (file.is_open())
-    {
-        file << expression << ",Invalid\n";
-        file.close();
-    }
-    else
-    {
-        cout << "Error: Unable to open prefix_invalid_expressions.csv for writing." << endl;
-    }
-}
-
-void deleteEvaluation(const string &filename, const string &expressionToDelete)
-{
-    ifstream inputFile(filename);
-    vector<string> lines;
-    bool deleted = false;
-
-    if (inputFile.is_open())
-    {
-        string line;
-        while (getline(inputFile, line))
-        {
-            // Check if the line starts with the expression to delete
-            if (line.substr(0, line.find(',')) != expressionToDelete)
+            if (isdigit(expression[i]))
             {
-                lines.push_back(line); // Keep lines that don't match
+                while (i >= 0 && isdigit(expression[i]))
+                    i--;
+                i++;
+                operandCount++;
             }
-            else
+            else if (expression[i] == '+' || expression[i] == '-' || expression[i] == '*' || expression[i] == '/' || expression[i] == '^')
             {
-                deleted = true; // Mark as deleted if found
+                operatorCount++;
+                if (operatorCount >= operandCount)
+                    return false;
+            }
+            else if (!isspace(expression[i]))
+            {
+                return false; // Invalid character
             }
         }
-        inputFile.close();
-    }
-    else
-    {
-        cout << "Error: Unable to open " << filename << " for reading." << endl;
-        return;
+        return operandCount == operatorCount + 1;
     }
 
-    // Write back the filtered lines to the file
-    ofstream outputFile(filename, ios::trunc);
-    if (outputFile.is_open())
+    void storeValidExpression(const string &expression, int result)
     {
-        for (const auto &line : lines)
+        if (result == -1)
         {
-            outputFile << line << "\n";
-        }
-        outputFile.close();
-        if (deleted)
-        {
-            cout << "Expression deleted successfully from " << filename << "." << endl;
-        }
-        else
-        {
-            cout << "Expression not found in " << filename << "." << endl;
-        }
-    }
-    else
-    {
-        cout << "Error: Unable to open " << filename << " for writing." << endl;
-    }
-}
-
-void updateEvaluation(const string &filename, const string &oldExpression, const string &newExpression, int result)
-{
-    ifstream inputFile(filename);
-    vector<string> lines;
-    bool updated = false;
-
-    if (inputFile.is_open())
-    {
-        string line;
-        while (getline(inputFile, line))
-        {
-            if (line.substr(0, line.find(',')) == oldExpression && !updated)
-            {
-                if (filename == "prefix_valid_expressions.csv")
-                {
-                    if (!isValid(newExpression))
-                    {
-                        cout << "New expression is invalid; cannot update valid evaluations." << endl;
-                        inputFile.close();
-                        return;
-                    }
-                    lines.push_back(newExpression + "," + to_string(result));
-                }
-                else
-                {
-                    lines.push_back(newExpression + ",Invalid");
-                }
-                updated = true;
-            }
-            else
-            {
-                lines.push_back(line);
-            }
-        }
-        inputFile.close();
-    }
-    else
-    {
-        cout << "Error: Unable to open " << filename << " for reading." << endl;
-        return;
-    }
-
-    ofstream outputFile(filename, ios::trunc);
-    if (outputFile.is_open())
-    {
-        for (const auto &line : lines)
-        {
-            outputFile << line << "\n";
-        }
-        outputFile.close();
-        if (updated)
-        {
-            cout << "Evaluation updated successfully in " << filename << "." << endl;
-        }
-        else
-        {
-            cout << "Expression not found in " << filename << "." << endl;
-        }
-    }
-    else
-    {
-        cout << "Error: Unable to open " << filename << " for writing." << endl;
-    }
-}
-
-void displayEvaluations(const string &filename)
-{
-    ifstream file(filename);
-    if (file.is_open())
-    {
-        if (file.peek() == ifstream::traits_type::eof())
-        {
-            cout << "No evaluations found in " << filename << "." << endl;
+            cout << "Error: Invalid result; cannot store the expression." << endl;
             return;
         }
 
-        string line;
-        cout << "\nContents of " << filename << ":\n";
-        cout << "Expression, Result\n";
-        while (getline(file, line))
+        ofstream file("prefix_valid_expressions.csv", ios::app);
+        if (file.is_open())
         {
-            cout << line << endl;
-        }
-        file.close();
-    }
-    else
-    {
-        cout << "Error: Unable to open " << filename << " for reading." << endl;
-    }
-}
-
-int prefixEvaluation(const string &prefixExpression)
-{
-    Stack opStack;
-
-    for (int i = prefixExpression.length() - 1; i >= 0; i--)
-    {
-        if (isdigit(prefixExpression[i]))
-        {
-            double num = 0;
-            double placeValue = 1;
-
-            while (i >= 0 && isdigit(prefixExpression[i]))
-            {
-                num = (prefixExpression[i] - '0') * placeValue + num;
-                placeValue *= 10;
-                i--;
-            }
-            i++;
-            opStack.push(num);
-        }
-        else if (isspace(prefixExpression[i]))
-        {
-            continue;
+            file << expression << "," << fixed << setprecision(2) << result << "\n";
+            file.close();
         }
         else
         {
-            if (opStack.isEmpty())
-            {
-                cout << "Error: Insufficient operands for operator " << prefixExpression[i] << endl;
-                return -1;
-            }
-            double op2 = opStack.pop();
-
-            if (opStack.isEmpty())
-            {
-                cout << "Error: Insufficient operands for operator " << prefixExpression[i] << endl;
-                return -1;
-            }
-            double op1 = opStack.pop();
-
-            switch (prefixExpression[i])
-            {
-            case '+':
-                opStack.push(op2 + op1);
-                break;
-            case '-':
-                opStack.push(op2 - op1);
-                break;
-            case '*':
-                opStack.push(op2 * op1);
-                break;
-            case '/':
-                opStack.push(op2 / op1);
-                break;
-            case '^':
-                opStack.push(pow(op2, op1));
-                break;
-            default:
-                cout << "Error: Unknown operator " << prefixExpression[i] << endl;
-                return -1;
-            }
+            cout << "Error: Unable to open prefix_valid_expressions.csv for writing." << endl;
         }
     }
-    return opStack.top();
-}
 
-class PrefixEvaluation
-{
-    int choice;
-
-    void displayMenu()
+    void storeInvalidExpression(const string &expression)
     {
-        cout << "\n--- Prefix ---\n";
-        cout << "1. Evaluate the Expression\n";
-        cout << "2. Display Evaluations\n";
-        cout << "3. Delete an Evaluation\n";
-        cout << "4. Update an Evaluation\n";
-        cout << "5. Exit\n";
-        cout << "Enter your choice: ";
+        ofstream file("prefix_invalid_expressions.csv", ios::app);
+        if (file.is_open())
+        {
+            file << expression << ",Invalid\n";
+            file.close();
+        }
+        else
+        {
+            cout << "Error: Unable to open prefix_invalid_expressions.csv for writing." << endl;
+        }
     }
 
-public:
-    void run()
+    void deleteEvaluation(const string &filename, const string &expressionToDelete)
     {
+        ifstream inputFile(filename);
+        vector<string> lines;
+        bool deleted = false;
+
+        if (inputFile.is_open())
+        {
+            string line;
+            while (getline(inputFile, line))
+            {
+                // Check if the line starts with the expression to delete
+                if (line.substr(0, line.find(',')) != expressionToDelete)
+                {
+                    lines.push_back(line); // Keep lines that don't match
+                }
+                else
+                {
+                    deleted = true; // Mark as deleted if found
+                }
+            }
+            inputFile.close();
+        }
+        else
+        {
+            cout << "Error: Unable to open " << filename << " for reading." << endl;
+            return;
+        }
+
+        // Write back the filtered lines to the file
+        ofstream outputFile(filename, ios::trunc);
+        if (outputFile.is_open())
+        {
+            for (const auto &line : lines)
+            {
+                outputFile << line << "\n";
+            }
+            outputFile.close();
+            if (deleted)
+            {
+                cout << "Expression deleted successfully from " << filename << "." << endl;
+            }
+            else
+            {
+                cout << "Expression not found in " << filename << "." << endl;
+            }
+        }
+        else
+        {
+            cout << "Error: Unable to open " << filename << " for writing." << endl;
+        }
+    }
+
+    void updateEvaluation(const string &filename, const string &oldExpression, const string &newExpression, int result)
+    {
+        ifstream inputFile(filename);
+        vector<string> lines;
+        bool updated = false;
+
+        if (inputFile.is_open())
+        {
+            string line;
+            while (getline(inputFile, line))
+            {
+                if (line.substr(0, line.find(',')) == oldExpression && !updated)
+                {
+                    if (filename == "prefix_valid_expressions.csv")
+                    {
+                        if (!isValid(newExpression))
+                        {
+                            cout << "New expression is invalid; cannot update valid evaluations." << endl;
+                            inputFile.close();
+                            return;
+                        }
+                        lines.push_back(newExpression + "," + to_string(result));
+                    }
+                    else
+                    {
+                        lines.push_back(newExpression + ",Invalid");
+                    }
+                    updated = true;
+                }
+                else
+                {
+                    lines.push_back(line);
+                }
+            }
+            inputFile.close();
+        }
+        else
+        {
+            cout << "Error: Unable to open " << filename << " for reading." << endl;
+            return;
+        }
+
+        ofstream outputFile(filename, ios::trunc);
+        if (outputFile.is_open())
+        {
+            for (const auto &line : lines)
+            {
+                outputFile << line << "\n";
+            }
+            outputFile.close();
+            if (updated)
+            {
+                cout << "Evaluation updated successfully in " << filename << "." << endl;
+            }
+            else
+            {
+                cout << "Expression not found in " << filename << "." << endl;
+            }
+        }
+        else
+        {
+            cout << "Error: Unable to open " << filename << " for writing." << endl;
+        }
+    }
+
+    void displayEvaluations(const string &filename)
+    {
+        ifstream file(filename);
+        if (file.is_open())
+        {
+            if (file.peek() == ifstream::traits_type::eof())
+            {
+                cout << "No evaluations found in " << filename << "." << endl;
+                return;
+            }
+
+            string line;
+            cout << "\nContents of " << filename << ":\n";
+            cout << "Expression, Result\n";
+            while (getline(file, line))
+            {
+                cout << line << endl;
+            }
+            file.close();
+        }
+        else
+        {
+            cout << "Error: Unable to open " << filename << " for reading." << endl;
+        }
+    }
+
+    int prefixEvaluation(const string &prefixExpression)
+    {
+        Stack opStack;
+
+        for (int i = prefixExpression.length() - 1; i >= 0; i--)
+        {
+            if (isdigit(prefixExpression[i]))
+            {
+                double num = 0;
+                double placeValue = 1;
+
+                while (i >= 0 && isdigit(prefixExpression[i]))
+                {
+                    num = (prefixExpression[i] - '0') * placeValue + num;
+                    placeValue *= 10;
+                    i--;
+                }
+                i++;
+                opStack.push(num);
+            }
+            else if (isspace(prefixExpression[i]))
+            {
+                continue;
+            }
+            else
+            {
+                if (opStack.isEmpty())
+                {
+                    cout << "Error: Insufficient operands for operator " << prefixExpression[i] << endl;
+                    return -1;
+                }
+                double op2 = opStack.pop();
+
+                if (opStack.isEmpty())
+                {
+                    cout << "Error: Insufficient operands for operator " << prefixExpression[i] << endl;
+                    return -1;
+                }
+                double op1 = opStack.pop();
+
+                switch (prefixExpression[i])
+                {
+                case '+':
+                    opStack.push(op2 + op1);
+                    break;
+                case '-':
+                    opStack.push(op2 - op1);
+                    break;
+                case '*':
+                    opStack.push(op2 * op1);
+                    break;
+                case '/':
+                    opStack.push(op2 / op1);
+                    break;
+                case '^':
+                    opStack.push(pow(op2, op1));
+                    break;
+                default:
+                    cout << "Error: Unknown operator " << prefixExpression[i] << endl;
+                    return -1;
+                }
+            }
+        }
+        return opStack.top();
+    }
+
+        void run()
+    {
+        int choice;
         do
         {
-            displayMenu();
+            cout << "\n--- Prefix ---\n";
+            cout << "1. Evaluate the Expression\n";
+            cout << "2. Display Evaluations\n";
+            cout << "3. Delete an Evaluation\n";
+            cout << "4. Update an Evaluation\n";
+            cout << "5. Exit\n";
+            cout << "Enter your choice: ";
             cin >> choice;
             cin.ignore();
 
@@ -524,4 +518,4 @@ public:
             }
         } while (choice != 5);
     }
-};
+    };
