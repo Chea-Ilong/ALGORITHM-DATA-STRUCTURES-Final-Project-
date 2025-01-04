@@ -1,2 +1,22 @@
 +,Invalid
 + 1 1 - 1,Invalid
++ 1 1 1,Invalid
+0.50,Invalid
++ 0.50 0.50,Invalid
++ 4 -4,Invalid
+- -1 -1 ,Invalid
+- 2 1,Invalid
+- 1 1,Invalid
++ 1 1,Invalid
++ 1 1,Invalid
++ 1 11,Invalid
+,Invalid
++ 1 1,Invalid
++ 1 1 ,Invalid
++ 1 1,Invalid
+-2,Invalid
+-1,Invalid
+-1,Invalid
+-1,Invalid
++ - 1 1,Invalid
+-1,Invalid

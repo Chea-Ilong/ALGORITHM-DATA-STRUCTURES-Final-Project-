@@ -192,11 +192,17 @@ public:
                     result = pow(op1, op2);
                     break;
                 case '/':
-                    if (op2 == 0)
+                    if (op1 == 0 && op2 == 0)
+                    {
+                        cout << "0 divided by 0, returning 0" << endl;
+                        return 0; // Return 0 when both operands are zero
+                    }
+                    else if (op2 == 0)
                     {
                         cout << "Can't divide by 0" << endl;
                         return NAN;
                     }
+
                     result = op1 / op2;
                     break;
                 default:
@@ -429,11 +435,11 @@ public:
     //     cout << "--------------------------" << endl;
 
     //     cout << "1. Parentheses:" << endl;
-    //     cout << "   - Infix: Uses parentheses to show operation order (e.g., (3 + 4) * 5)." << endl;
-    //     cout << "   - Postfix: No parentheses needed; order is clear from position (e.g., 3 4 + 5 *)." << endl;
+    //     cout << "   - Infix: Uses parentheses to show operation order (ex: , (3 + 4) * 5)." << endl;
+    //     cout << "   - Postfix: No parentheses needed; order is clear from position (ex: , 3 4 + 5 *)." << endl;
 
     //     cout << "2. Operator Precedence:" << endl;
-    //     cout << "   - Infix: Operators follow rules (e.g., multiplication before addition)." << endl;
+    //     cout << "   - Infix: Operators follow rules (ex: , multiplication before addition)." << endl;
     //     cout << "   - Postfix: Order is determined by position, no need for precedence rules." << endl;
 
     //     cout << "3. Evaluation:" << endl;
@@ -462,7 +468,7 @@ public:
             cout << "*                                        *" << endl;
             cout << "******************************************" << RESET << endl
                  << endl;
-             string infix_with_space = "(A + B) * (C - D)";
+            string infix_with_space = "(A + B) * (C - D)";
             // Prompt for menu options
             cout << BOLD << YELLOW << "Please choose an option from the menu below:" << RESET << endl
                  << endl;
@@ -475,10 +481,9 @@ public:
             cout << RED << "  5. Exit" << RESET << endl
                  << endl;
 
-
             cout << BOLD << CYAN << "Enter your choice: " << RESET;
             cin >> choice;
-         
+
             cin.ignore();
             system("cls");
             switch (choice)
@@ -491,7 +496,7 @@ public:
 
                 while (count < 3)
                 {
-                    cout << "Enter a postfix expression to calculate (e.g., '23 4 + 5 *'): ";
+                    cout << "Enter a postfix expression to calculate (ex: , '23 4 + 5 *'): ";
                     getline(cin, expression);
 
                     if (!validate_postfix(expression))
@@ -513,11 +518,11 @@ public:
                                 cout << "--------------------------" << endl;
 
                                 cout << "1. Parentheses:" << endl;
-                                cout << "   - Infix: Uses parentheses to show operation order (e.g., (3 + 4) * 5)." << endl;
-                                cout << "   - Postfix: No parentheses needed; order is clear from position (e.g., 3 4 + 5 *)." << endl;
+                                cout << "   - Infix: Uses parentheses to show operation order (ex: , (3 + 4) * 5)." << endl;
+                                cout << "   - Postfix: No parentheses needed; order is clear from position (ex: , 3 4 + 5 *)." << endl;
 
                                 cout << "2. Operator Precedence:" << endl;
-                                cout << "   - Infix: Operators follow rules (e.g., multiplication before addition)." << endl;
+                                cout << "   - Infix: Operators follow rules (ex: , multiplication before addition)." << endl;
                                 cout << "   - Postfix: Order is determined by position, no need for precedence rules." << endl;
 
                                 cout << "3. Evaluation:" << endl;
@@ -613,7 +618,7 @@ public:
 
 //     while (count < 3)
 //     {
-//         cout << "Enter a postfix expression to calculate (e.g., '23 4 + 5 *'): ";
+//         cout << "Enter a postfix expression to calculate (ex: , '23 4 + 5 *'): ";
 //         getline(cin, expression);
 
 //         if (!validate_postfix(expression))

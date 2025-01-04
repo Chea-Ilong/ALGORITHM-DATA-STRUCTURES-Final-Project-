@@ -105,3 +105,4 @@ Valid postfix expression:
 2 2 + = 4
 1 1 + = 2
 0 0 +  = 0
+1.50 = 1.5
