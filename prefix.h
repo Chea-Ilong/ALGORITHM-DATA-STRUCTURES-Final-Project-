@@ -357,23 +357,37 @@ public:
         int choice;
         do
         {
+            const string RESET = "\033[0m";
+            const string RED = "\033[31m";
+            const string GREEN = "\033[32m";
+            const string YELLOW = "\033[33m";
+            const string CYAN = "\033[36m";
+            const string BOLD = "\033[1m";
+
+            // Header with Colorful Formatting
+            cout << CYAN;
             cout << "******************************************" << endl;
             cout << "*                                        *" << endl;
-            cout << "*      WELCOME TO PREFIX EVALUATION      *" << endl;
+            cout << "*      " << BOLD << YELLOW << "WELCOME TO PREFIX EVALUATION" << RESET << CYAN << "      *" << endl;
             cout << "*                                        *" << endl;
-            cout << "******************************************" << endl
+            cout << "******************************************" << RESET << endl
                  << endl;
 
-            cout << "Please select an option from the menu below:" << endl
+            // Menu Title
+            cout << BOLD << YELLOW << "Please select an option from the menu below:" << RESET << endl
                  << endl;
 
-            cout << "  1. Evaluate the Expression" << endl;
-            cout << "  2. Display Evaluations" << endl;
-            cout << "  3. Delete an Evaluation" << endl;
-            cout << "  4. Update an Evaluation" << endl;
-            cout << "  5. Exit" << endl
+            // Menu Options with Color
+            cout << GREEN << "  1. Evaluate the Expression" << RESET << endl;
+            cout << GREEN << "  2. Display Evaluations" << RESET << endl;
+            cout << GREEN << "  3. Delete an Evaluation" << RESET << endl;
+            cout << GREEN << "  4. Update an Evaluation" << RESET << endl;
+            cout << RED << "  5. Exit" << RESET << endl
                  << endl;
-            cout << "Enter your choice: ";
+
+            // Input Prompt
+            cout << BOLD << CYAN << "Enter your choice: " << RESET;
+
             cin >> choice;
             cin.ignore();
 

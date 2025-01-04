@@ -447,24 +447,38 @@ public:
         do
         {
 
+            const string RESET = "\033[0m";
+            const string RED = "\033[31m";
+            const string GREEN = "\033[32m";
+            const string YELLOW = "\033[33m";
+            const string CYAN = "\033[36m";
+            const string BOLD = "\033[1m";
+
+            // Header with Colorful Formatting
+            cout << CYAN;
             cout << "******************************************" << endl;
             cout << "*                                        *" << endl;
-            cout << "*      WELCOME TO POSTFIX EVALUATION     *" << endl;
+            cout << "*      " << BOLD << YELLOW << "WELCOME TO POSTFIX EVALUATION" << RESET << CYAN << "     *" << endl;
             cout << "*                                        *" << endl;
-            cout << "******************************************" << endl
+            cout << "******************************************" << RESET << endl
+                 << endl;
+             string infix_with_space = "(A + B) * (C - D)";
+            // Prompt for menu options
+            cout << BOLD << YELLOW << "Please choose an option from the menu below:" << RESET << endl
                  << endl;
 
-            cout << "Please choose an option from the menu below:" << endl
+            // Menu Options with Color
+            cout << GREEN << "  1. Evaluate Postfix Expression" << RESET << endl;
+            cout << GREEN << "  2. View All Expressions" << RESET << endl;
+            cout << GREEN << "  3. Update an Expression" << RESET << endl;
+            cout << GREEN << "  4. Delete an Expression" << RESET << endl;
+            cout << RED << "  5. Exit" << RESET << endl
                  << endl;
 
-            cout << "  1. Evaluate Postfix Expression" << endl;
-            cout << "  2. View All Expressions" << endl;
-            cout << "  3. Update an Expression" << endl;
-            cout << "  4. Delete an Expression" << endl;
-            cout << "  5. Exit" << endl
-                 << endl;
-            cout << "Enter your choice: ";
+
+            cout << BOLD << CYAN << "Enter your choice: " << RESET;
             cin >> choice;
+         
             cin.ignore();
             system("cls");
             switch (choice)
@@ -516,7 +530,7 @@ public:
                             else
                             {
                                 cout << "Alright, feel free to ask for help anytime!" << endl;
-                                     system("cls");
+                                system("cls");
 
                                 break;
                             }

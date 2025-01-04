@@ -51,32 +51,45 @@ public:
         do
         {
             system("cls");
+            const string RESET = "\033[0m";
+            const string RED = "\033[31m";
+            const string GREEN = "\033[32m";
+            const string YELLOW = "\033[33m";
+            const string CYAN = "\033[36m";
+            const string BOLD = "\033[1m";
+
+            // Header with Colorful Formatting
+            cout << CYAN;
             cout << "***********************************************" << endl;
             cout << "*                                             *" << endl;
-            cout << "*     WELCOME TO THE EXPRESSION CONVERSION    *" << endl;
+            cout << "*     " << BOLD << YELLOW << "WELCOME TO THE EXPRESSION CONVERSION" << RESET << CYAN << "    *" << endl;
             cout << "*                                             *" << endl;
-            cout << "***********************************************" << endl
+            cout << "***********************************************" << RESET << endl
                  << endl;
 
-            cout << "Current Infix Expression: " << infix_with_space << endl
+            // Current Infix Expression with Color
+            cout << BOLD << YELLOW << "Current Infix Expression: " << RESET << infix_with_space << endl
                  << endl;
 
-            cout << "Please choose an option from the menu below:" << endl
+            // Prompt to choose an option with Color
+            cout << BOLD << YELLOW << "Please choose an option from the menu below:" << RESET << endl
                  << endl;
 
-            cout << "  1. Enter a New Infix Expression" << endl;
-            cout << "  2. Modify the Current Infix Expression" << endl;
-            cout << "  3. Update Expression in File" << endl;
-            cout << "  4. View Expressions from File" << endl;
-            cout << "  5. Delete an Expression in File" << endl;
-            cout << "  6. Convert to Postfix Notation" << endl;
-            cout << "  7. Convert to Prefix Notation" << endl;
-            cout << "  8. Save the Expression to File" << endl;
-            cout << "  9. Exit the Program" << endl
+            // Menu Options with Color
+            cout << GREEN << "  1. Enter a New Infix Expression" << RESET << endl;
+            cout << GREEN << "  2. Modify the Current Infix Expression" << RESET << endl;
+            cout << GREEN << "  3. Update Expression in File" << RESET << endl;
+            cout << GREEN << "  4. View Expressions from File" << RESET << endl;
+            cout << GREEN << "  5. Delete an Expression in File" << RESET << endl;
+            cout << GREEN << "  6. Convert to Postfix Notation" << RESET << endl;
+            cout << GREEN << "  7. Convert to Prefix Notation" << RESET << endl;
+            cout << GREEN << "  8. Save the Expression to File" << RESET << endl;
+            cout << RED << "  9. Exit the Program" << RESET << endl
                  << endl;
 
-            cout << "Enter your choice: ";
+            cout << BOLD << CYAN << "Enter your choice: " << RESET;
             cin >> choice;
+
             cin.ignore();
             cout << endl;
             switch (choice)
