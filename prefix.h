@@ -369,7 +369,75 @@ public:
             }
         }
         return opStack.top();
+
     }
+        void prefix(){
+               string expression;
+                int count = 0;
+                char option;
+
+                while (count < 3)
+                {
+                    cout << "Enter a prefix expression to calculate (ex: '+ 1 1'): ";
+                    getline(cin, expression);
+
+                    if (!isValid(expression)) // Validate the prefix expression
+                    {
+                        storeInvalidExpression(expression); // Store invalid expression
+                        count++;
+                        if (count == 3)
+                        {
+                            cout << "Too many invalid expressions entered!" << endl;
+                            cout << "Would you like help understanding prefix expressions?" << endl;
+                            cout << "Press 'y' for yes or 'n' for no: ";
+                            cin >> option;
+                            cin.ignore();
+
+                            if (option == 'y' || option == 'Y')
+                            {
+                                cout << "Prefix Notation Help:" << endl;
+                                cout << "--------------------------" << endl;
+
+                                cout << "1. Order of Operations:" << endl;
+                                cout << "   - Prefix: Operators come before operands (ex: '+ 1 2')." << endl;
+                                cout << "   - This avoids the need for parentheses or operator precedence rules." << endl;
+
+                                cout << "2. Evaluation:" << endl;
+                                cout << "   - Prefix expressions are processed from right to left using a stack." << endl;
+
+                                cout << "3. Example:" << endl;
+                                cout << "   - Prefix: '+ 3 * 4 5' evaluates to 23 (3 + (4 * 5))." << endl;
+
+                                count = 0; // Reset invalid count after help
+                                continue;
+                            }
+                            else
+                            {
+                                cout << "Alright, feel free to ask for help anytime!" << endl;
+                                system("cls");
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        double result = prefixEvaluation(expression); // Evaluate the prefix expression
+                        if (isnan(result))
+                        {
+                            storeInvalidExpression(expression); // Store invalid if evaluation fails
+                        }
+                        else
+                        {
+                            cout << "Result: " << result << endl;
+                            storeValidExpression(expression, result); // Store valid expression with result
+                            cout << "\nPress any key to continue..." << endl;
+                            getchar();
+                            system("cls");
+                        }
+                        break;
+                    }
+                }
+        }
     void run()
     {
         int choice;
@@ -437,72 +505,9 @@ public:
             //     break;
             case 1:
             {
-                string expression;
-                int count = 0;
-                char option;
-
-                while (count < 3)
-                {
-                    cout << "Enter a prefix expression to calculate (ex: '+ 1 1'): ";
-                    getline(cin, expression);
-
-                    if (!isValid(expression)) // Validate the prefix expression
-                    {
-                        storeInvalidExpression(expression); // Store invalid expression
-                        count++;
-                        if (count == 3)
-                        {
-                            cout << "Too many invalid expressions entered!" << endl;
-                            cout << "Would you like help understanding prefix expressions?" << endl;
-                            cout << "Press 'y' for yes or 'n' for no: ";
-                            cin >> option;
-                            cin.ignore();
-
-                            if (option == 'y' || option == 'Y')
-                            {
-                                cout << "Prefix Notation Help:" << endl;
-                                cout << "--------------------------" << endl;
-
-                                cout << "1. Order of Operations:" << endl;
-                                cout << "   - Prefix: Operators come before operands (ex: '+ 1 2')." << endl;
-                                cout << "   - This avoids the need for parentheses or operator precedence rules." << endl;
-
-                                cout << "2. Evaluation:" << endl;
-                                cout << "   - Prefix expressions are processed from right to left using a stack." << endl;
-
-                                cout << "3. Example:" << endl;
-                                cout << "   - Prefix: '+ 3 * 4 5' evaluates to 23 (3 + (4 * 5))." << endl;
-
-                                count = 0; // Reset invalid count after help
-                                continue;
-                            }
-                            else
-                            {
-                                cout << "Alright, feel free to ask for help anytime!" << endl;
-                                system("cls");
-                                break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        double result = prefixEvaluation(expression); // Evaluate the prefix expression
-                        if (isnan(result))
-                        {
-                            storeInvalidExpression(expression); // Store invalid if evaluation fails
-                        }
-                        else
-                        {
-                            cout << "Result: " << result << endl;
-                            storeValidExpression(expression, result); // Store valid expression with result
-                            cout << "\nPress any key to continue..." << endl;
-                            getchar();
-                            system("cls");
-                        }
-                        break;
-                    }
-                }
-                break;
+             
+              prefix();
+                  break;
             }
 
             case 2:

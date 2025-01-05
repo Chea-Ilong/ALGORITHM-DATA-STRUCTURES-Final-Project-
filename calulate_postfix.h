@@ -195,7 +195,7 @@ public:
                     if (op1 == 0 && op2 == 0)
                     {
                         cout << "0 divided by 0, returning 0" << endl;
-                        return 0; 
+                        return 0;
                     }
                     else if (op2 == 0)
                     {
@@ -405,7 +405,6 @@ public:
         }
     }
 
-  
     void menu()
     {
         int choice;
@@ -449,79 +448,10 @@ public:
             {
             case 1:
             {
-                string expression;
-                int count = 0;
-                char option;
-
-                while (count < 3)
-                {
-                    cout << "Enter a postfix expression to calculate (ex: , '23 4 + 5 *'): ";
-                    getline(cin, expression);
-
-                    if (!validate_postfix(expression))
-                    {
-                        store_invalid_expression(expression);
-                        count++;
-                        if (count == 3)
-                        {
-                            cout << "Too many invalid expressions entered!" << endl;
-                            cout << "Would you like help understanding postfix expressions?" << endl;
-                            cout << "Press 'y' for yes or 'n' for no: ";
-                            cin >> option;
-                            cin.ignore();
-
-                            if (option == 'y' || option == 'Y')
-                            {
-
-                                cout << "Postfix Notation Help:" << endl;
-                                cout << "--------------------------" << endl;
-
-                                cout << "1. Parentheses:" << endl;
-                                cout << "   - Infix: Uses parentheses to show operation order (ex: , (3 + 4) * 5)." << endl;
-                                cout << "   - Postfix: No parentheses needed; order is clear from position (ex: , 3 4 + 5 *)." << endl;
-
-                                cout << "2. Operator Precedence:" << endl;
-                                cout << "   - Infix: Operators follow rules (ex: , multiplication before addition)." << endl;
-                                cout << "   - Postfix: Order is determined by position, no need for precedence rules." << endl;
-
-                                cout << "3. Evaluation:" << endl;
-                                cout << "   - Infix: Needs extra steps to handle parentheses and operator order." << endl;
-                                cout << "   - Postfix: Simply processed left to right with a stack." << endl;
-
-                                count = 0;
-                                continue;
-                            }
-                            else
-                            {
-                                cout << "Alright, feel free to ask for help anytime!" << endl;
-                                system("cls");
-
-                                break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        double result = evaluate_postfix(expression);
-                        if (isnan(result))
-                        {
-
-                            store_invalid_expression(expression);
-                        }
-                        else
-                        {
-
-                            cout << "Result: " << result << endl;
-                            store_valid_expression(expression, result);
-                            cout << "\nPress any key to continue..." << endl;
-                            getchar();
-                            system("cls");
-                        }
-                        break;
-                    }
-                }
+                postfix();
+                  break;
             }
-            break;
+          
             case 2:
             {
 
@@ -529,8 +459,9 @@ public:
                 cout << "\nPress any key to continue..." << endl;
                 getchar();
                 system("cls");
+                  break;
             }
-            break;
+          
             case 3:
             {
                 string old_expression;
@@ -545,8 +476,9 @@ public:
                 cout << "\nPress any key to continue..." << endl;
                 getchar();
                 system("cls");
+                  break;
             }
-            break;
+          
             case 4:
             {
                 string old_expression;
@@ -568,59 +500,79 @@ public:
             }
         } while (1);
     }
+
+    void postfix()
+    {
+        string expression;
+        int count = 0;
+        char option;
+
+        while (count < 3)
+        {
+            cout << "Enter a postfix expression to calculate (ex: , '23 4 + 5 *'): ";
+            getline(cin, expression);
+
+            if (!validate_postfix(expression))
+            {
+                store_invalid_expression(expression);
+                count++;
+                if (count == 3)
+                {
+                    cout << "Too many invalid expressions entered!" << endl;
+                    cout << "Would you like help understanding postfix expressions?" << endl;
+                    cout << "Press 'y' for yes or 'n' for no: ";
+                    cin >> option;
+                    cin.ignore();
+
+                    if (option == 'y' || option == 'Y')
+                    {
+
+                        cout << "Postfix Notation Help:" << endl;
+                        cout << "--------------------------" << endl;
+
+                        cout << "1. Parentheses:" << endl;
+                        cout << "   - Infix: Uses parentheses to show operation order (ex: , (3 + 4) * 5)." << endl;
+                        cout << "   - Postfix: No parentheses needed; order is clear from position (ex: , 3 4 + 5 *)." << endl;
+
+                        cout << "2. Operator Precedence:" << endl;
+                        cout << "   - Infix: Operators follow rules (ex: , multiplication before addition)." << endl;
+                        cout << "   - Postfix: Order is determined by position, no need for precedence rules." << endl;
+
+                        cout << "3. Evaluation:" << endl;
+                        cout << "   - Infix: Needs extra steps to handle parentheses and operator order." << endl;
+                        cout << "   - Postfix: Simply processed left to right with a stack." << endl;
+
+                        count = 0;
+                        continue;
+                    }
+                    else
+                    {
+                        cout << "Alright, feel free to ask for help anytime!" << endl;
+                        system("cls");
+
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                double result = evaluate_postfix(expression);
+                if (isnan(result))
+                {
+
+                    store_invalid_expression(expression);
+                }
+                else
+                {
+
+                    cout << "Result: " << result << endl;
+                    store_valid_expression(expression, result);
+                    cout << "\nPress any key to continue..." << endl;
+                    getchar();
+                    system("cls");
+                }
+                break;
+            }
+        }
+    }
 };
-// void postfix()
-// {
-//     string expression;
-//     int count = 0;
-//     char option;
-
-//     while (count < 3)
-//     {
-//         cout << "Enter a postfix expression to calculate (ex: , '23 4 + 5 *'): ";
-//         getline(cin, expression);
-
-//         if (!validate_postfix(expression))
-//         {
-//             store_invalid_expression(expression);
-//             count++;
-//             if (count == 3)
-//             {
-//                 cout << "Too many invalid expressions entered!" << endl;
-//                 cout << "Would you like help understanding postfix expressions?" << endl;
-//                 cout << "Press 'y' for yes or 'n' for no: ";
-//                 cin >> option;
-//                 cin.ignore();
-
-//                 if (option == 'y' || option == 'Y')
-//                 {
-//                     help();
-//                     count = 0;
-//                     continue;
-//                 }
-//                 else
-//                 {
-//                     cout << "Alright, feel free to ask for help anytime!" << endl;
-//                     break;
-//                 }
-//             }
-//         }
-//         else
-//         {
-//             double result = evaluate_postfix(expression);
-//             if (isnan(result))
-//             {
-
-//                 store_invalid_expression(expression);
-//             }
-//             else
-//             {
-
-//                 cout << "Result: " << result << endl;
-//                 store_valid_expression(expression, result);
-//             }
-//             break;
-//         }
-//     }
-// }
-// };
