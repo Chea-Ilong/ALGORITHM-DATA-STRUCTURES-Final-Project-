@@ -161,7 +161,7 @@ public:
         {
             return false;
         }
-        for (int i = 0; i < infix.length(); i++)
+        for (size_t i = 0; i < infix.length(); i++)
         {
             if (parenthesis < 0)
             {
@@ -275,7 +275,7 @@ public:
             cout << "Unable to open file";
             return;
         }
-        for (int i = 0; i < vec_postfix.size(); i++)
+        for (size_t i = 0; i < vec_postfix.size(); i++)
         {
             write_file << vec_prefix[i] << ',' << vec_postfix[i] << endl;
         }
@@ -306,14 +306,14 @@ public:
         }
         read_file.close();
         cout << "Conversion to Prefix Expression : ";
-        for (int i = 0; i < vec_prefix.size(); i++)
+        for (size_t i = 0; i < vec_prefix.size(); i++)
         {
             cout << endl
                  << "[" << i + 1 << "] " << vec_prefix[i];
         }
         cout << endl
              << "Conversion to Postfix Expression : ";
-        for (int i = 0; i < vec_postfix.size(); i++)
+        for (size_t i = 0; i < vec_postfix.size(); i++)
         {
             cout << endl
                  << "[" << i + 1 << "] " << vec_postfix[i];
@@ -357,7 +357,7 @@ public:
             cout << "Unable to open file";
             return;
         }
-        for (int i = 0; i < vec_postfix.size(); i++)
+        for (size_t i = 0; i < vec_postfix.size(); i++)
         {
             write_file << vec_prefix[i] << ',' << vec_postfix[i] << endl;
         }
@@ -424,7 +424,7 @@ public:
         if (input == "")
             input = infix;
         reverse(input.begin(), input.end());
-        for (int i = 0; i < input.size(); i++)
+        for (size_t i = 0; i < input.size(); i++)
         {
             if (input[i] == '(')
             {

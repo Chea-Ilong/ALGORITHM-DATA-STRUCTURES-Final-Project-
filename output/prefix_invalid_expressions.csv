@@ -20,3 +20,42 @@
 -1,Invalid
 + - 1 1,Invalid
 -1,Invalid
++ 1.50 1,50,Invalid
+- 10 + 6 2,Invalid
+- 10 + 6 2,Invalid
+- 10 + 6 2,Invalid
+- 10 5 + 2,Invalid
+- + 2 * 3 4 5,Invalid
+* + 8 2 - 3 4,Invalid
+- + * 2 3 * 5 4 9,Invalid
++ - 5 3 * 2 4,Invalid
+/ - 6 2 3,Invalid
++ - 5 3 * 2 4,Invalid
+11 1 1,Invalid
++ 1 -1,Invalid
+- + * 2 3 * 5 4 9,Invalid
+- 2 2,Invalid
+- 1 1,Invalid
+-1,Invalid
+-1.2,Invalid
+-1,Invalid
++ 1 -1,Invalid
+-1.20,Invalid
+-1.2,Invalid
+-1.20,Invalid
+-10.1,Invalid
+-1.20,Invalid
+-1.2,Invalid
+- 1 1,Invalid
+-1.20,Invalid
+-1,Invalid
++ -5 10,Invalid
+-1.20,Invalid
++ -5 10,Invalid
+-1,Invalid
++ -1 -1 ,Invalid
+1 1,Invalid
+1 1 +,Invalid
+1 1,Invalid
+1 1,Invalid
+1 1,Invalid

@@ -195,7 +195,7 @@ public:
                     if (op1 == 0 && op2 == 0)
                     {
                         cout << "0 divided by 0, returning 0" << endl;
-                        return 0; // Return 0 when both operands are zero
+                        return 0; 
                     }
                     else if (op2 == 0)
                     {
@@ -321,7 +321,6 @@ public:
             trimmed_line.erase(0, trimmed_line.find_first_not_of(" \n\r\t")); // Left trim
             trimmed_line.erase(trimmed_line.find_last_not_of(" \n\r\t") + 1); // Right trim
 
-            // If the expression matches the one to update, modify it
             if (trimmed_line == old_expression)
             {
                 line = new_expression + " = " + result;
@@ -406,47 +405,7 @@ public:
         }
     }
 
-    // void remove_postfix_expression()
-    // {
-    //     string old_expression;
-
-    //     display_valid_expression();
-    //     cout << "Enter the equation you want to delete (ex: 1 1 + = 2): ";
-    //     getline(cin, old_expression);
-    //     delete_expression(old_expression);
-    //     // display_valid_expression();
-    // }
-    // void update_postfix_expression()
-    // {
-    //     string old_expression;
-    //     string new_expression;
-
-    //     display_valid_expression();
-    //     cout << "Enter the equation you want to update (ex: 1 1 + = 2): ";
-    //     getline(cin, old_expression);
-    //     cout << "Enter the new expression (ex: 1 1 + ): ";
-    //     getline(cin, new_expression);
-    //     update_expression(old_expression, new_expression);
-
-    // }
-    // void help()
-    // {
-    //     cout << "Postfix Notation Help:" << endl;
-    //     cout << "--------------------------" << endl;
-
-    //     cout << "1. Parentheses:" << endl;
-    //     cout << "   - Infix: Uses parentheses to show operation order (ex: , (3 + 4) * 5)." << endl;
-    //     cout << "   - Postfix: No parentheses needed; order is clear from position (ex: , 3 4 + 5 *)." << endl;
-
-    //     cout << "2. Operator Precedence:" << endl;
-    //     cout << "   - Infix: Operators follow rules (ex: , multiplication before addition)." << endl;
-    //     cout << "   - Postfix: Order is determined by position, no need for precedence rules." << endl;
-
-    //     cout << "3. Evaluation:" << endl;
-    //     cout << "   - Infix: Needs extra steps to handle parentheses and operator order." << endl;
-    //     cout << "   - Postfix: Simply processed left to right with a stack." << endl;
-    // }
-
+  
     void menu()
     {
         int choice;

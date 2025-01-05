@@ -82,66 +82,33 @@ class PrefixEvaluation
 public:
     bool isValid(const string &expression)
     {
-        int operandCount = 0; // To track the number of operands
+        int operandCount = 0;
+        int operatorCount = 0;
 
-        // Iterate over each character in the expression (from right to left)
-        for (int i = expression.length() - 1; i >= 0; --i)
+        for (int i = expression.length() - 1; i >= 0; i--)
         {
-            char ch = expression[i];
-
-            // Skip spaces
-            if (isspace(ch))
+            if (isdigit(expression[i]) || expression[i] == '.')
             {
-                continue;
-            }
-
-            // If the character is a digit (operand) or a decimal number
-            if (isdigit(ch) || (ch == '-' && i - 1 >= 0 && isdigit(expression[i - 1])))
-            {
-                // Handle negative number, if '-' is followed by a digit, treat it as part of the number
-                if (ch == '-' && (i - 1 >= 0 && isdigit(expression[i - 1])))
-                {
-                    --i; // Skip the negative sign as part of the number
-                }
-
-                // We need to handle the full number, including negative and decimal numbers
-                while (i - 1 >= 0 && (isdigit(expression[i - 1]) || expression[i - 1] == '.'))
-                {
-                    --i;
-                }
-
-                // An operand is found, increment the count
+                // Parse a number with optional decimal point
+                while (i >= 0 && (isdigit(expression[i]) || expression[i] == '.'))
+                    i--;
+                if (i >= 0 && expression[i] == '-') // Handle negative numbers
+                    i--;
+                i++;
                 operandCount++;
             }
-            // Handle operators
-            else if (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^')
+            else if (expression[i] == '+' || expression[i] == '-' || expression[i] == '*' || expression[i] == '/' || expression[i] == '^')
             {
-                // Ensure there are at least two operands before an operator
-                if (operandCount < 2)
-                {
-                    cout << "Error: Not enough operands for operator '" << ch << "'!" << endl;
+                operatorCount++;
+                if (operatorCount >= operandCount)
                     return false;
-                }
-
-                // After the operator, reduce the operand count by 1 (as the operator consumes two operands)
-                operandCount--;
             }
-            else
+            else if (!isspace(expression[i]))
             {
-                // Invalid character
-                cout << "Error: Invalid character '" << ch << "' in the expression!" << endl;
-                return false;
+                return false; // Invalid character
             }
         }
-
-        // At the end, there must be exactly one operand left in the stack (the result)
-        if (operandCount != 1)
-        {
-            cout << "Error: Invalid prefix expression - unbalanced operands/operators!" << endl;
-            return false;
-        }
-
-        return true;
+        return operandCount == operatorCount + 1;
     }
     void storeValidExpression(const string &expression, double result)
     {
@@ -327,37 +294,49 @@ public:
 
         for (int i = prefixExpression.length() - 1; i >= 0; i--)
         {
-            if (isdigit(prefixExpression[i]))
+            if (isdigit(prefixExpression[i]) || prefixExpression[i] == '.')
             {
-                double num = 0;
-                double placeValue = 1;
+                string numberStr = "";
 
-                while (i >= 0 && isdigit(prefixExpression[i]))
+                // Collect the digits and decimal point
+                while (i >= 0 && (isdigit(prefixExpression[i]) || prefixExpression[i] == '.'))
                 {
-                    num = (prefixExpression[i] - '0') * placeValue + num;
-                    placeValue *= 10;
+                    numberStr = prefixExpression[i] + numberStr; // Add to the front
                     i--;
                 }
-                i++;
+                i++; // Adjust index after the inner loop
+
+                // Check if there is a negative sign before the number
+                if (i > 0 && prefixExpression[i - 1] == '-')
+                {
+                    if (i == 1 || !isdigit(prefixExpression[i - 2])) // Ensure it's a negative sign, not a subtraction operator
+                    {
+                        numberStr = '-' + numberStr;
+                        i--; // Skip the negative sign
+                    }
+                }
+
+                // Convert the string to a double
+                double num = stod(numberStr);
                 opStack.push(num);
             }
             else if (isspace(prefixExpression[i]))
             {
-                continue;
+                continue; // Skip spaces
             }
             else
             {
                 if (opStack.isEmpty())
                 {
                     cout << "Error: Insufficient operands for operator " << prefixExpression[i] << endl;
-                    return NAN;
+                    return -1;
                 }
                 double op2 = opStack.pop();
 
                 if (opStack.isEmpty())
                 {
                     cout << "Error: Insufficient operands for operator " << prefixExpression[i] << endl;
-                    return NAN;
+                    return -1;
                 }
                 double op1 = opStack.pop();
 
@@ -373,29 +352,24 @@ public:
                     opStack.push(op2 * op1);
                     break;
                 case '/':
-                    if (op1 == 0 && op2 == 0)
+                    if (op1 == 0)
                     {
-                        cout << "0 divided by 0, returning 0" << endl;
-                        return 0; // Return 0 when both operands are zero
+                        cout << "Error: Division by zero" << endl;
+                        return -1;
                     }
-                    else if (op1 == 0)
-                    {
-                        cout << "Can't divide by 0" << endl;
-                        return NAN;
-                    }
+                    opStack.push(op2 / op1);
                     break;
                 case '^':
                     opStack.push(pow(op2, op1));
                     break;
                 default:
                     cout << "Error: Unknown operator " << prefixExpression[i] << endl;
-                    return NAN;
+                    return -1;
                 }
             }
         }
         return opStack.top();
     }
-
     void run()
     {
         int choice;
@@ -437,31 +411,100 @@ public:
 
             switch (choice)
             {
+            // case 1:
+            // {
+            //     string prefixExpression;
+            //     cout << "Enter a prefix expression (ex: + 1 1): ";
+            //     getline(cin, prefixExpression);
+
+            //     if (isValid(prefixExpression))
+            //     {
+            //         double result = prefixEvaluation(prefixExpression);
+            //         if (result != NAN)
+            //         {
+            //             cout << "The result of the prefix expression is: " << result << endl;
+            //             storeValidExpression(prefixExpression, result);
+            //             cout << "\nPress any key to continue..." << endl;
+            //             getchar();
+            //             system("cls");
+            //         }
+            //     }
+            //     else
+            //     {
+            //         cout << "The prefix expression is invalid." << endl;
+            //         storeInvalidExpression(prefixExpression);
+            //     }
+            //     break;
             case 1:
             {
-                string prefixExpression;
-                cout << "Enter a prefix expression (ex: + 1 1): ";
-                getline(cin, prefixExpression);
+                string expression;
+                int count = 0;
+                char option;
 
-                if (isValid(prefixExpression))
+                while (count < 3)
                 {
-                    double result = prefixEvaluation(prefixExpression);
-                    if (result != NAN)
+                    cout << "Enter a prefix expression to calculate (ex: '+ 1 1'): ";
+                    getline(cin, expression);
+
+                    if (!isValid(expression)) // Validate the prefix expression
                     {
-                        cout << "The result of the prefix expression is: " << result << endl;
-                        storeValidExpression(prefixExpression, result);
-                        cout << "\nPress any key to continue..." << endl;
-                        getchar();
-                        system("cls");
+                        storeInvalidExpression(expression); // Store invalid expression
+                        count++;
+                        if (count == 3)
+                        {
+                            cout << "Too many invalid expressions entered!" << endl;
+                            cout << "Would you like help understanding prefix expressions?" << endl;
+                            cout << "Press 'y' for yes or 'n' for no: ";
+                            cin >> option;
+                            cin.ignore();
+
+                            if (option == 'y' || option == 'Y')
+                            {
+                                cout << "Prefix Notation Help:" << endl;
+                                cout << "--------------------------" << endl;
+
+                                cout << "1. Order of Operations:" << endl;
+                                cout << "   - Prefix: Operators come before operands (ex: '+ 1 2')." << endl;
+                                cout << "   - This avoids the need for parentheses or operator precedence rules." << endl;
+
+                                cout << "2. Evaluation:" << endl;
+                                cout << "   - Prefix expressions are processed from right to left using a stack." << endl;
+
+                                cout << "3. Example:" << endl;
+                                cout << "   - Prefix: '+ 3 * 4 5' evaluates to 23 (3 + (4 * 5))." << endl;
+
+                                count = 0; // Reset invalid count after help
+                                continue;
+                            }
+                            else
+                            {
+                                cout << "Alright, feel free to ask for help anytime!" << endl;
+                                system("cls");
+                                break;
+                            }
+                        }
                     }
-                }
-                else
-                {
-                    cout << "The prefix expression is invalid." << endl;
-                    storeInvalidExpression(prefixExpression);
+                    else
+                    {
+                        double result = prefixEvaluation(expression); // Evaluate the prefix expression
+                        if (isnan(result))
+                        {
+                            storeInvalidExpression(expression); // Store invalid if evaluation fails
+                        }
+                        else
+                        {
+                            cout << "Result: " << result << endl;
+                            storeValidExpression(expression, result); // Store valid expression with result
+                            cout << "\nPress any key to continue..." << endl;
+                            getchar();
+                            system("cls");
+                        }
+                        break;
+                    }
                 }
                 break;
             }
+
             case 2:
             {
                 cout << "Display valid expression:  ";
@@ -469,59 +512,11 @@ public:
                 cout << "\nPress any key to continue..." << endl;
                 getchar();
                 system("cls");
-                // char type;
-                // cout << "Display (v)alid, (i)nvalid, or (a)ll evaluations? ";
 
-                // cin >> type;
-                // cin.ignore();
-
-                // if (type == 'v' || type == 'V')
-                // {
-                //     displayEvaluations("prefix_valid_expressions.csv");
-                // }
-                // else if (type == 'i' || type == 'I')
-                // {
-                //     displayEvaluations("prefix_invalid_expressions.csv");
-                // }
-                // else if (type == 'a' || type == 'A')
-                // {
-                //     cout << "\nDisplaying valid evaluations:" << endl;
-                //     displayEvaluations("prefix_valid_expressions.csv");
-                //     cout << "\nDisplaying invalid evaluations:" << endl;
-                //     displayEvaluations("prefix_invalid_expressions.csv");
-                // }
-                // else
-                // {
-                //     cout << "Invalid choice." << endl;
-                // }
                 break;
             }
             case 3:
             {
-
-                // char type;
-                // cout << "Delete from (v)alid or (i)nvalid expressions? ";
-                // cin >> type;
-                // cin.ignore();
-
-                // string filename;
-                // if (type == 'v' || type == 'V')
-                // {
-                //     filename = "prefix_valid_expressions.csv";
-                //     cout << "\nValid evaluations:\n";
-                //     displayEvaluations(filename);
-                // }
-                // else if (type == 'i' || type == 'I')
-                // {
-                //     filename = "prefix_invalid_expressions.csv";
-                //     cout << "\nInvalid evaluations:\n";
-                //     displayEvaluations(filename);
-                // }
-                // else
-                // {
-                //     cout << "Invalid choice." << endl;
-                //     break;
-                // }
 
                 cout << "Display valid expression:  ";
                 displayEvaluations("prefix_valid_expressions.csv");
@@ -540,55 +535,6 @@ public:
 
             case 4:
             {
-
-                // char type;
-                // string filename;
-                // cout << "Update (v)alid or (i)nvalid expressions? ";
-                // cin >> type;
-                // cin.ignore();
-
-                // if (type == 'v' || type == 'V')
-                // {
-                //     filename = "prefix_valid_expressions.csv";
-                //     cout << "\nValid evaluations:\n";
-                //     displayEvaluations(filename);
-                //     string oldExpression, newExpression;
-                //     cout << "Enter the expression to update: ";
-                //     getline(cin, oldExpression);
-                //     cout << "Enter the new expression: ";
-                //     getline(cin, newExpression);
-
-                //     if (isValid(newExpression))
-                //     {
-                //         double result = prefixEvaluation(newExpression);
-                //         if (result != NAN)
-                //         {
-                //             updateEvaluation("prefix_valid_expressions.csv", oldExpression, newExpression, result);
-                //         }
-                //     }
-                //     else
-                //     {
-                //         cout << "The new prefix expression is invalid." << endl;
-                //         updateEvaluation("prefix_invalid_expressions.csv", oldExpression, newExpression, NAN);
-                //     }
-                // }
-                // else if (type == 'i' || type == 'I')
-                // {
-                //     string oldExpression, newExpression;
-                //     filename = "prefix_invalid_expressions.csv";
-                //     cout << "\nInvalid evaluations:\n";
-                //     displayEvaluations(filename);
-                //     cout << "Enter the expression to update: ";
-                //     getline(cin, oldExpression);
-                //     cout << "Enter the new expression: ";
-                //     getline(cin, newExpression);
-
-                //     updateEvaluation("prefix_invalid_expressions.csv", oldExpression, newExpression, NAN);
-                // }
-                // else
-                // {
-                //     cout << "Invalid choice." << endl;
-                // }
 
                 string filename = "prefix_valid_expressions.csv";
 
